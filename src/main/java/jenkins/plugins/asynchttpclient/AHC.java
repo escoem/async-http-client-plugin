@@ -36,6 +36,10 @@ public class AHC extends Descriptor<AHC> implements Describable<AHC> {
     @Restricted(NoExternalUse.class) // no direct linking against this field please
     public static boolean acceptAnyCertificate = Boolean.getBoolean(AHC.class.getName() + ".acceptAnyCertificate");
 
+    @SuppressFBWarnings(value = "MS_SHOULD_BE_FINAL", justification = "Allow runtime modification")
+    @Restricted(NoExternalUse.class) // no direct linking against this field please
+    public static int timeout = Integer.getInteger(AHC.class.getName() + ".requestTimeoutInMs", 120000);   
+
     /**
      * Our logger.
      */
@@ -98,6 +102,10 @@ public class AHC extends Descriptor<AHC> implements Describable<AHC> {
                             .setProxyServer(AHCUtils.getProxyServer())
                             .setHostnameVerifier(AHCUtils.getHostnameVerifier())
                             .setSSLContext(AHCUtils.getSSLContext())
+                            .setRequestTimeoutInMs(timeout)
+                            .setConnectionTimeoutInMs(timeout)
+                            .setWebSocketIdleTimeoutInMs(timeout)
+                            .setIdleConnectionTimeoutInMs(timeout)
                             .build());
         }
         return instance;
